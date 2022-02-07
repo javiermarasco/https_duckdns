@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-app
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: echo-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: echo-app
+    spec:
+      containers:
+      - name: echo-app
+        image: hashicorp/http-echo
+        args:
+        - "-text=aplicación de prueba"
+        ports:
+        - containerPort: 5678

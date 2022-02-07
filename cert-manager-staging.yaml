@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-https-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: cert-manager-webhook-duckdns-staging
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  tls:
+  - hosts:
+    - superprueba.duckdns.org
+    secretName: superprueba-tls-secret-staging
+  rules:
+  - host: superprueba.duckdns.org
+    http:
+      paths:
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: echo-svc
+            port:
+              number: 80
